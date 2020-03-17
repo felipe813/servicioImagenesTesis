@@ -1,0 +1,66 @@
+INSTALAR PYTHON
+
+sudo apt-get update
+sudo apt-get upgrade
+
+sudo apt install python3-pip
+
+INSTALAR PYTHON-ENV
+
+sudo apt-get install python3-venv
+
+INSTALAR GIT
+
+sudo apt-get install git
+
+CREAR CARPETA
+
+mkdir ServicioFlaskImagenes
+
+IR A CARPETA
+
+cd ServicioFlaskImagenes
+
+CREAR ENTORNO VIRTUAL
+
+python3 -m venv servicio-env
+
+IR A ENTORNO VIRTUAL
+
+cd servicio-env
+
+ACTIVAR ENTORNO VIRTUAL
+
+source bin/activate
+
+INSTALAR FLASK
+
+pip install Flask
+
+INSTALAR SQLALCHEMY
+
+pip install -U Flask-SQLAlchemy
+
+CREAR CARPETA DE PROYECTO
+
+mkdir proyecto
+
+IR A CARPETA DE PROYECTO
+
+cd proyecto
+
+CLONAR PROYECTO
+
+git clone https://github.com/felipe813/servicioImagenesTesis.git
+
+IR A CARPETA
+
+cd servicioImagenesTesis
+
+CORRER SERVICIO
+
+python3 main.py
+
+SALIR ENTORNO VIRTUAL
+
+deactivate
