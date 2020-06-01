@@ -49,7 +49,7 @@ def create_imagen():
         return jsonify({'message': 'Bad request'}), 400
 
     metadatos = []
-    if json['Metadatos'] is not None:
+    if json.get('Metadatos') is not None:
         for metadato in json['Metadatos']:
             if metadato["Nombre"] is not None and metadato["Valor"] is not None:
                 metadatos.append([metadato["Nombre"],metadato["Valor"]])
