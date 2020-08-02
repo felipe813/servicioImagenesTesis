@@ -209,6 +209,93 @@ def get_tipos():
     return jsonify({'Tipos': tipos })
 
 
+
+@app.route('/api/usuarios',methods=['GET'])
+def get_usuarios():
+    app.logger.warning('get_usuarios') 
+    usuarios = dao.GetUsuarios()
+    return jsonify({'Usuarios': usuarios })
+
+@app.route('/api/recorridos',methods=['GET'])
+def get_recorridos():
+    app.logger.warning('get_recorridos') 
+    recorridos = dao.GetRecorridos()
+    return jsonify({'Recorridos': recorridos })
+
+@app.route('/api/usuarios', methods=['POST'])
+def create_usuario():
+    json = request.get_json(force=True)
+
+    if json.get('Usuario') is None or  json.get('Contrasena') is None or json.get('Nombre') is None or json.get('Edad') is None:
+        return jsonify({'message': 'Bad request'}), 400
+
+    usuario = dao.InsertarUsuario(json['Usuario'],json['Contrasena'],json['Nombre'],json['Edad'])
+
+    if usuario is not False:
+        return jsonify({'Usuario': usuario.json() })
+    else:
+        return jsonify({'message': 'Bad request'}), 400
+
+@app.route('/api/usuarios/<usuario>/<contrasena>', methods=['GET'])
+def get_usuario(usuario,contrasena):
+    usuario = dao.GetUsuario(usuario,contrasena)
+    if usuario is None:
+        return jsonify({'message': 'El usuario no existe'}), 404
+
+    return jsonify({'Usuario': usuario.json() })
+
+
+@app.route('/api/imagenesRandom/<cantidad>',methods=['GET'])
+def get_imagenes_random(cantidad):
+    app.logger.warning('get_imagenes')
+    #imagenes = [ imagen.json() for imagen in Imagen.query.all() ]  
+    imagenes = dao.GetRandomImagenes(cantidad)
+    return jsonify({'Imagenes': imagenes })
+
+
+@app.route('/api/recorridos', methods=['POST'])
+def create_recorrido():
+    json = request.get_json(force=True)
+
+    if json.get('IdUsuario') is None :
+        return jsonify({'message': 'Bad request'}), 400
+
+    imagenes = []
+    if json.get('IdImagenes') is not None:
+        for img in json['IdImagenes']:
+            imagenes.append(img)
+
+    recorrido = dao.InsertarRecorrido(json['IdUsuario'], imagenes)
+
+    if recorrido is not False:
+        return jsonify({'Recorrido': recorrido.json() })
+    else:
+        return jsonify({'message': 'Bad request'}), 400
+
+@app.route('/api/recorridos', methods=['PUT'])
+def update_imagen_recorrido():
+    json = request.get_json(force=True)  
+    if json.get('Calificacion') is None :
+        return jsonify({'message': 'Bad request'}), 400
+
+    if json.get('IdRecorrido') is None :
+        return jsonify({'message': 'Bad request'}), 400
+
+    if json.get('IdImagen') is None :
+        return jsonify({'message': 'Bad request'}), 400
+
+    calificacion = json.get('Calificacion')
+    idRecorrido = json.get('IdRecorrido')
+    idImagen = json.get('IdImagen')
+
+   
+    recorridoImagen = dao.CalificarImagen(idRecorrido,idImagen,calificacion)
+
+    if recorridoImagen is not False:
+        return jsonify({'RecorridoImagen': recorridoImagen.json() })
+    else:
+        return jsonify({'message': 'Bad request'}), 400
+
 if __name__ == '__main__':
     app.run(debug=True)
     #app.run(host='0.0.0.0', port=16790)

@@ -68,6 +68,63 @@ class Tipo(db.Model):
         }
 
 
+class Usuario(db.Model):
+    __tablename__ = 'Usuario'
+
+    Id = db.Column(db.Integer, primary_key=True)
+    Usuario = db.Column(db.String(50), nullable=False) 
+    Contrasena = db.Column(db.String(100), nullable=False) 
+    Nombre = db.Column(db.String(200), nullable=False) 
+    Edad = db.Column(db.Integer, nullable=False)
+
+    def json(self):
+        return {
+            'Id': self.Id,
+            'Nombre': self.Nombre,
+            'Usuario': self.Usuario,
+            'Contraseña': self.Contrasena,
+            'Edad': self.Edad
+        }
+
+
+class Recorrido(db.Model):
+    __tablename__ = 'Recorrido'
+
+    Id = db.Column(db.Integer, primary_key=True,autoincrement=True)
+    #FechaRecorrido = db.Column(db.DateTime, default=db.func.current_timestamp())
+    FechaRecorrido = db.Column(db.String(100), nullable=False) 
+    IdUsuario = db.Column(db.Integer, db.ForeignKey('Usuario.Id'),primary_key=True)
+
+    ImagenRecorrido = db.relationship('ImagenRecorrido')
+    Usuario = db.relationship('Usuario')
+
+    def json(self):
+        return {
+            'Id': self.Id,
+            'FechaRecorrido': self.FechaRecorrido,
+            #'Usuario': self.IdUsuario,
+            'NombreUsuario': self.Usuario.Nombre,
+            'Imagenes':[imagen.json() for imagen in self.ImagenRecorrido]
+        }
+
+class ImagenRecorrido(db.Model):
+    __tablename__ = 'ImagenRecorrido'
+
+    IdRecorrido = db.Column(db.Integer, db.ForeignKey('Recorrido.Id') ,primary_key=True)
+    Calificacion = db.Column(db.Integer) 
+    IdImagen = db.Column(db.Integer, db.ForeignKey('Imagenes.Id'),primary_key=True)
+
+    Recorrido = db.relationship('Recorrido',back_populates="ImagenRecorrido")
+    Imagen = db.relationship('Imagen')
+
+    def json(self):
+        return {
+            #'Recorrido': self.Recorrido.Id,
+            'IdImagen': self.IdImagen,
+            'Calificacion': self.Calificacion,
+            'NombreImagen':self.Imagen.Nombre,
+            'DireccionImagen':self.Imagen.Direccion
+        }
 
 
 

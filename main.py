@@ -207,6 +207,7 @@ class Main():
     def get_tipos(self):
         tipos = dao.GetTipos()
         return jsonify({'Tipos': tipos })
+        
 
 
     if __name__ == '__main__':

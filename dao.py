@@ -3,7 +3,12 @@ from models import Imagen
 from models import Metadato
 from models import MetadatoImagen
 from models import Tipo
+from models import Usuario
+from models import Recorrido
+from models import ImagenRecorrido
+from sqlalchemy import func
 import time
+from datetime import datetime
 
 class DAO():
     def GetImagenes(self):
@@ -206,3 +211,70 @@ class DAO():
         except Exception as e: 
             print("ERROR: "+str(e))
             return False
+
+
+    def GetUsuarios(self):
+        return  [ usuario.json() for usuario in Usuario.query.all() ]  
+
+    def GetRecorridos(self):
+        return  [ recorrido.json() for recorrido in Recorrido.query.all() ]  
+
+    def InsertarUsuario (self,usuario, contrasena, nombre, edad):         
+                       
+        usuario = Usuario(Usuario = usuario,Contrasena = contrasena, Nombre = nombre, Edad = edad)
+        try:
+                db.session.add(usuario)
+                db.session.commit()
+
+                return usuario
+        except Exception as e: 
+                print("ERROR: "+str(e))
+                return False
+
+    def GetUsuario(self,usuario,contrasena):
+        return Usuario.query.filter_by(Usuario=usuario,Contrasena=contrasena).first()
+        
+    def GetRandomImagenes(self, cantidad):
+        return  [ imagen.json() for imagen in Imagen.query.order_by(func.random()).limit(cantidad).all()]  
+
+    def InsertarRecorrido (self,idUsuario, idImagenes):
+        now = datetime.now()
+        recorrido = Recorrido(FechaRecorrido = now,IdUsuario = idUsuario)
+        try:
+                db.session.add(recorrido)
+                db.session.commit()
+            
+                imagenesDB = []
+                #Verificar que los metadatos estén en el sistema y que los tipos concuerden
+                for img in idImagenes:
+                    imgDB = Imagen.query.filter_by(Id = img).first()
+                    if  imgDB is None:
+                        print("La imagen con id "+img+" no existe en el sistema")
+                    else:
+                        imagenesDB.append(ImagenRecorrido(IdImagen = img,Calificacion= -1, IdRecorrido = recorrido.Id))
+
+                for m in imagenesDB:
+                    db.session.add(m)
+                db.session.commit()
+
+                return recorrido
+        except Exception as e: 
+                print("ERROR: "+str(e))
+                return False
+
+    def CalificarImagen (self,idRecorrido, idImagen, calificacion):
+      
+        imagenRecorrido = ImagenRecorrido.query.filter_by(IdRecorrido =idRecorrido,IdImagen = idImagen).first()
+
+        if imagenRecorrido is None:
+            return imagenRecorrido
+
+        if calificacion is not None:
+            imagenRecorrido.Calificacion = calificacion
+        
+        try:
+            db.session.commit()
+            return imagenRecorrido
+        except Exception as e: 
+                print("ERROR: "+str(e))
+                return False
