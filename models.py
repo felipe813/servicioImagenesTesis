@@ -126,8 +126,34 @@ class ImagenRecorrido(db.Model):
             'DireccionImagen':self.Imagen.Direccion
         }
 
+class PreguntaTest(db.Model):
+    __tablename__ = 'PreguntaTest'
 
+    IdPregunta = db.Column(db.Integer, primary_key=True)
+    Pregunta = db.Column(db.String(200), nullable=False) 
 
+    RespuestaPregunta = db.relationship('RespuestaPregunta')
+
+    def json(self):
+        return {
+            'Id': self.IdPregunta,
+            'Pregunta': self.Pregunta,            
+            'Respuestas':[respuesta.json() for respuesta in self.RespuestaPregunta]
+        }
+
+class RespuestaPregunta(db.Model):
+    __tablename__ = 'RespuestaPregunta'
+
+    IdPregunta = db.Column(db.Integer, db.ForeignKey('PreguntaTest.IdPregunta') ,primary_key=True)
+    IdRecorrido = db.Column(db.Integer, db.ForeignKey('Recorrido.Id') ,primary_key=True)
+    Respuesta = db.Column(db.Integer)
+
+    def json(self):
+        return {
+            'IdPregunta': self.IdPregunta,
+            'IdRecorrido': self.IdRecorrido,
+            'Respuesta':self.Respuesta
+        }
 
 
 

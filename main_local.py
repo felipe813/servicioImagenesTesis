@@ -296,6 +296,33 @@ def update_imagen_recorrido():
     else:
         return jsonify({'message': 'Bad request'}), 400
 
+
+@app.route('/api/preguntasTest',methods=['GET'])
+def get_preguntas():
+    preguntas = dao.GetPreguntas()
+    return jsonify({'Preguntas': preguntas })
+
+
+@app.route('/api/RespuestasTest', methods=['POST'])
+def create_respuesta():
+    json = request.get_json(force=True)
+
+    if json.get('IdRecorrido') is None :
+        return jsonify({'message': 'Bad request'}), 400
+
+    if json.get('IdPregunta') is None :
+        return jsonify({'message': 'Bad request'}), 400
+
+    if json.get('Respuesta') is None :
+        return jsonify({'message': 'Bad request'}), 400
+
+    respuesta = dao.ResponderPregunta(json['IdRecorrido'], json['IdPregunta'],json['Respuesta'])
+
+    if respuesta is not False:
+        return jsonify({'Recorrido': respuesta.json() })
+    else:
+        return jsonify({'message': 'Bad request'}), 400
+
 if __name__ == '__main__':
     app.run(debug=True)
     #app.run(host='0.0.0.0', port=16790)

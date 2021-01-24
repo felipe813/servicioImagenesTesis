@@ -6,6 +6,9 @@ from models import Tipo
 from models import Usuario
 from models import Recorrido
 from models import ImagenRecorrido
+from models import PreguntaTest
+from models import RespuestaPregunta
+
 from sqlalchemy import func
 import time
 from datetime import datetime
@@ -275,6 +278,22 @@ class DAO():
         try:
             db.session.commit()
             return imagenRecorrido
+        except Exception as e: 
+                print("ERROR: "+str(e))
+                return False
+
+    def GetPreguntas(self):
+            return  [ pregunta.json() for pregunta in PreguntaTest.query.all() ]  
+
+    def ResponderPregunta (self,idRecorrido, idPregunta, respuesta):
+
+        respuesta = RespuestaPregunta( IdRecorrido= idRecorrido,IdPregunta = idPregunta, Respuesta = respuesta)
+        try:
+                db.session.add(respuesta)
+                db.session.commit()        
+                db.session.commit()
+                return respuesta
+
         except Exception as e: 
                 print("ERROR: "+str(e))
                 return False
