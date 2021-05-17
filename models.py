@@ -73,12 +73,12 @@ class TiempoRecorrido(db.Model):
 
     Id = db.Column(db.Integer, primary_key=True,autoincrement=True)
     IdRecorrido = db.Column(db.Integer)
-    Tiempo = db.column(db.Float)
+    Tiempo = db.Column(db.Integer)
 
     def json(self):
         return {
             'Id': self.Id,
-            'Recorrido': self.IdRecorrido,
+            'IdRecorrido': self.IdRecorrido,
             'Tiempo': self.Tiempo
         }
 

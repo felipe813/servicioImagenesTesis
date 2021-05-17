@@ -1,4 +1,4 @@
-from models import TiempoRecorrido, db
+from models import db
 from models import Imagen
 from models import Metadato
 from models import MetadatoImagen
@@ -8,6 +8,7 @@ from models import Recorrido
 from models import ImagenRecorrido
 from models import PreguntaTest
 from models import RespuestaPregunta
+from models import TiempoRecorrido
 
 from sqlalchemy import func
 import time
@@ -299,11 +300,10 @@ class DAO():
                 
 
     def AgregarTiempo (self,idRecorrido,tiempo):
-
         tiempo = TiempoRecorrido( IdRecorrido= idRecorrido,Tiempo = tiempo)
         try:
                 db.session.add(tiempo)
-                db.session.commit()        
+                db.session.commit()      
                 return tiempo
 
         except Exception as e: 

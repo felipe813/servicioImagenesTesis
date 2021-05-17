@@ -308,25 +308,26 @@ def create_respuesta():
     json = request.get_json(force=True)
 
     if json.get('IdRecorrido') is None :
-        return jsonify({'message': 'Bad request'}), 400
+        return jsonify({'message': 'Bad request1'}), 400
 
     if json.get('IdPregunta') is None :
-        return jsonify({'message': 'Bad request'}), 400
+        return jsonify({'message': 'Bad request2'}), 400
 
     if json.get('Respuesta') is None :
-        return jsonify({'message': 'Bad request'}), 400
+        return jsonify({'message': 'Bad request3'}), 400
 
     if json.get('Tiempo') is None :
-        return jsonify({'message': 'Bad request'}), 400
+        return jsonify({'message': 'Bad request4'}), 400
 
     respuesta = dao.ResponderPregunta(json['IdRecorrido'], json['IdPregunta'],json['Respuesta'])
 
-    respuesta2 = dao.AgregarTiempo(json['Tiempo'])
+    respuesta2 = dao.AgregarTiempo(json['IdRecorrido'],json['Tiempo'])
+    print(respuesta2.json())
 
     if respuesta is not False:
         return jsonify({'Recorrido': respuesta.json() })
     else:
-        return jsonify({'message': 'Bad request'}), 400
+        return jsonify({'message': 'Bad request5'}), 400
 
 @app.route('/api/tiemposRecorrido',methods=['GET'])
 def get_tiempos():
