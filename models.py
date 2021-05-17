@@ -68,6 +68,21 @@ class Tipo(db.Model):
         }
 
 
+class TiempoRecorrido(db.Model):
+    __tablename__ = 'TiempoRecorrido'
+
+    Id = db.Column(db.Integer, primary_key=True,autoincrement=True)
+    IdRecorrido = db.Column(db.Integer)
+    Tiempo = db.column(db.Float)
+
+    def json(self):
+        return {
+            'Id': self.Id,
+            'Recorrido': self.IdRecorrido,
+            'Tiempo': self.Tiempo
+        }
+
+
 class Usuario(db.Model):
     __tablename__ = 'Usuario'
 

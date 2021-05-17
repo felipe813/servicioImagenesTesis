@@ -316,12 +316,22 @@ def create_respuesta():
     if json.get('Respuesta') is None :
         return jsonify({'message': 'Bad request'}), 400
 
+    if json.get('Tiempo') is None :
+        return jsonify({'message': 'Bad request'}), 400
+
     respuesta = dao.ResponderPregunta(json['IdRecorrido'], json['IdPregunta'],json['Respuesta'])
+
+    respuesta2 = dao.AgregarTiempo(json['Tiempo'])
 
     if respuesta is not False:
         return jsonify({'Recorrido': respuesta.json() })
     else:
         return jsonify({'message': 'Bad request'}), 400
+
+@app.route('/api/tiemposRecorrido',methods=['GET'])
+def get_tiempos():
+    tiempos = dao.GetTiempos()
+    return jsonify({'Tiempos': tiempos })
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,4 +1,4 @@
-from models import db
+from models import TiempoRecorrido, db
 from models import Imagen
 from models import Metadato
 from models import MetadatoImagen
@@ -291,9 +291,24 @@ class DAO():
         try:
                 db.session.add(respuesta)
                 db.session.commit()        
-                db.session.commit()
                 return respuesta
 
         except Exception as e: 
                 print("ERROR: "+str(e))
                 return False
+                
+
+    def AgregarTiempo (self,idRecorrido,tiempo):
+
+        tiempo = TiempoRecorrido( IdRecorrido= idRecorrido,Tiempo = tiempo)
+        try:
+                db.session.add(tiempo)
+                db.session.commit()        
+                return tiempo
+
+        except Exception as e: 
+                print("ERROR: "+str(e))
+                return False
+
+    def GetTiempos(self):
+            return  [ tiempo.json() for tiempo in TiempoRecorrido.query.all() ]  
