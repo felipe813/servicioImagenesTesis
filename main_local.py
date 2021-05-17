@@ -322,7 +322,6 @@ def create_respuesta():
     respuesta = dao.ResponderPregunta(json['IdRecorrido'], json['IdPregunta'],json['Respuesta'])
 
     respuesta2 = dao.AgregarTiempo(json['IdRecorrido'],json['Tiempo'])
-    print(respuesta2.json())
 
     if respuesta is not False:
         return jsonify({'Recorrido': respuesta.json() })
