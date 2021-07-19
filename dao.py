@@ -1,4 +1,4 @@
-from models import db
+from models import Configuraciones, db
 from models import Imagen
 from models import Metadato
 from models import MetadatoImagen
@@ -311,4 +311,7 @@ class DAO():
                 return False
 
     def GetTiempos(self):
-            return  [ tiempo.json() for tiempo in TiempoRecorrido.query.all() ]  
+            return  [ tiempo.json() for tiempo in TiempoRecorrido.query.all() ]
+
+    def GetDireccionFTP(self):
+            return  [ configuracion.json() for configuracion in Configuraciones.query.filter_by(Nombre ="FTP").all() ]  

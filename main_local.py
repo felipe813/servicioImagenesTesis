@@ -333,6 +333,11 @@ def get_tiempos():
     tiempos = dao.GetTiempos()
     return jsonify({'Tiempos': tiempos })
 
+@app.route('/api/ftp',methods=['GET'])
+def get_ftp():
+    ftp = dao.GetDireccionFTP()
+    return jsonify({'FTP': ftp })
+
 if __name__ == '__main__':
     app.run(debug=True)
     #app.run(host='0.0.0.0', port=16790)

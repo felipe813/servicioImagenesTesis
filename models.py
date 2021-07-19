@@ -170,5 +170,19 @@ class RespuestaPregunta(db.Model):
             'Respuesta':self.Respuesta
         }
 
+class Configuraciones(db.Model):
+    __tablename__ = 'Configuraciones'
+
+    IdConfiguracion = db.Column(db.Integer, primary_key=True)
+    Nombre = db.Column(db.String(200), nullable=False) 
+    Valor = db.Column(db.String(200), nullable=False) 
+
+    def json(self):
+        return {
+            'Id': self.IdConfiguracion,
+            'Nombre': self.Nombre,            
+            'Valor': self.Valor
+        }
+
 
 
