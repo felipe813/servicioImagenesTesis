@@ -265,7 +265,15 @@ class DAO():
         return Usuario.query.filter_by(Usuario=usuario,Contrasena=contrasena).first()
         
     def GetRandomImagenes(self, cantidad):
-        return  [ imagen.json() for imagen in Imagen.query.order_by(func.random()).limit(cantidad).all()]  
+        return  [ imagen.json() for imagen in Imagen.query.order_by(func.random()).limit(cantidad).all()] 
+
+    def GetRandomImagenesNivelViolencia(self, cantidad, nivelViolencia):
+        imagenes = Imagen.query.filter_by(NivelViolencia=nivelViolencia).count()
+        if(imagenes > 0):
+            return  [ imagen.json() for imagen in Imagen.query.filter_by(NivelViolencia=nivelViolencia).order_by(func.random()).limit(cantidad).all()]  
+        else:
+            print("No existen imágenes con nivel de violencia "+nivelViolencia)
+            return  [ imagen.json() for imagen in Imagen.query.order_by(func.random()).limit(cantidad).all()]
 
     def InsertarRecorrido (self,idUsuario, idImagenes):
         now = datetime.now()

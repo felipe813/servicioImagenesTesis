@@ -253,6 +253,12 @@ def get_imagenes_random(cantidad):
     imagenes = dao.GetRandomImagenes(cantidad)
     return jsonify({'Imagenes': imagenes })
 
+@app.route('/api/imagenesRandom/<cantidad>/<nivelViolencia>',methods=['GET'])
+def get_imagenes_random_nivel(cantidad , nivelViolencia):
+    app.logger.warning('get_imagenes')
+    imagenes = dao.GetRandomImagenesNivelViolencia(cantidad,nivelViolencia)
+    return jsonify({'Imagenes': imagenes })
+
 
 @app.route('/api/recorridos', methods=['POST'])
 def create_recorrido():
