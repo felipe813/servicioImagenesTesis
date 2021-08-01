@@ -77,6 +77,32 @@ class DAO():
                 print("ERROR: "+str(e))
                 return False
 
+    def ActualizarImagen (self,id, nombre, direccion, fuente, nivelViolencia):
+      
+        imagen = Imagen.query.filter_by(Id =id).first()
+
+        if imagen is None:
+            return imagen
+
+        if nombre is not None:
+            imagen.Nombre = nombre
+        
+        if direccion is not None:
+            imagen.Direccion = direccion
+
+        if fuente is not None:
+            imagen.Fuente = fuente
+
+        if nivelViolencia is not None:
+            imagen.NivelViolencia = nivelViolencia
+        
+        try:
+            db.session.commit()
+            return imagen
+        except Exception as e: 
+                print("ERROR: "+str(e))
+                return False
+
     def EliminarImagen (self,id):
 
         imagen = Imagen.query.filter_by(Id=id).first()

@@ -93,8 +93,9 @@ def update_imagen(id):
     nombre = json.get('Nombre')
     direccion = json.get('Direccion')
     fuente = json.get('Fuente')
+    nivelViolencia = json.get('NivelViolencia')
 
-    imagen = dao.ActualizarImagen(id,nombre,direccion,fuente)
+    imagen = dao.ActualizarImagen(id,nombre,direccion,fuente,nivelViolencia)
 
     if imagen is not False:
         return jsonify({'Imagen': imagen.json() })
