@@ -345,6 +345,20 @@ def get_ftp():
     ftp = dao.GetDireccionFTP()
     return jsonify({'FTP': ftp })
 
+@app.route('/api/ftp',methods=['PUT'])
+def actualizar_ftp():
+    json = request.get_json(force=True)
+
+    if json.get('FTP') is None:
+        return jsonify({'message': 'Bad request'}), 400
+
+    ftp = dao.ActualizarFTP(json['FTP'])
+
+    if ftp is not False:
+        return jsonify({'FTP': ftp})
+    else:
+        return jsonify({'message': 'Bad request'}), 400
+
 if __name__ == '__main__':
     app.run(debug=True)
     #app.run(host='0.0.0.0', port=16790)

@@ -349,3 +349,18 @@ class DAO():
 
     def GetDireccionFTP(self):
             return  [ configuracion.json() for configuracion in Configuraciones.query.filter_by(Nombre ="FTP").all() ]  
+
+    def ActualizarFTP(self,ftp):
+        ftpExistente = Configuraciones.query.filter_by(Nombre ="FTP").first()
+
+        if ftpExistente is None:
+            return ftpExistente
+
+        if ftp is not None:
+            ftpExistente.Valor = ftp       
+        try:
+            db.session.commit()
+            return ftpExistente.json()
+        except Exception as e: 
+            print("ERROR: "+str(e))
+            return False
